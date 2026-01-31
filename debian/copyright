@@ -1,0 +1,7 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: kaiko-camera
+Source: https://github.com/hikalism2025-cell/silkworm_observer
+
+Files: *
+Copyright: 2026 Kaiko Team
+License: Proprietary

@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+if ! getent group kaiko-operators >/dev/null; then
+  addgroup --system kaiko-operators >/dev/null
+fi
+
+if [ -f /etc/kaiko-camera/updater.json ]; then
+  chmod 644 /etc/kaiko-camera/updater.json || true
+fi
+
+systemctl daemon-reload || true
+systemctl enable --now kaiko-updater.service || true
+
+exit 0

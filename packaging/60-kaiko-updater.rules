@@ -1,0 +1,5 @@
+polkit.addRule(function(action, subject) {
+    if (action.id == "com.kaiko.updater.install" && subject.isInGroup("kaiko-operators")) {
+        return polkit.Result.YES;
+    }
+});

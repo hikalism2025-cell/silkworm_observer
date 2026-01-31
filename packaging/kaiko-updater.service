@@ -1,0 +1,13 @@
+[Unit]
+Description=Kaiko Camera Updater Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=dbus
+BusName=com.kaiko.Updater
+ExecStart=/usr/bin/python3 /usr/lib/kaiko-camera/kaiko_updater_service.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

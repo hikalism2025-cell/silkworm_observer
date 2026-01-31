@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Kaiko Camera
+Exec=/usr/bin/kaiko-camera
+Icon=kaiko-camera
+Type=Application
+Categories=Science;Utility;
+Terminal=false
