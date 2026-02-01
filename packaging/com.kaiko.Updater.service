@@ -1,4 +1,4 @@
 [D-BUS Service]
-Name=com.kaiko.Updater
-Exec=/usr/bin/python3 /usr/lib/kaiko-camera/kaiko_updater_service.py
+Name=com.silkworm.ObserverUpdater
+Exec=/usr/bin/python3 /usr/lib/silkworm-observer/kaiko_updater_service.py
 User=root

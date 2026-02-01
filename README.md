@@ -1,4 +1,4 @@
-# Raspberry Pi Camera ROI Tool
+# Silkworm Observer
 
 GUI app to preview a camera feed, draw ROIs, and assign names for experiments.
 

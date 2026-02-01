@@ -1,12 +1,12 @@
 [Unit]
-Description=Kaiko Camera Updater Service
+Description=Silkworm Observer Updater Service
 After=network-online.target
 Wants=network-online.target
 
 [Service]
 Type=dbus
-BusName=com.kaiko.Updater
-ExecStart=/usr/bin/python3 /usr/lib/kaiko-camera/kaiko_updater_service.py
+BusName=com.silkworm.ObserverUpdater
+ExecStart=/usr/bin/python3 /usr/lib/silkworm-observer/kaiko_updater_service.py
 Restart=on-failure
 
 [Install]

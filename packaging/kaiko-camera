@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 set -euo pipefail
-exec /usr/bin/python3 /usr/lib/kaiko-camera/app_qt_v2.py
+exec /usr/bin/python3 /usr/lib/silkworm-observer/app_qt_v2.py

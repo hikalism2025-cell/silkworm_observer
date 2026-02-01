@@ -1,4 +1,4 @@
-Source: kaiko-camera
+Source: silkworm-observer
 Section: utils
 Priority: optional
 Maintainer: Kaiko Team <dev@kaiko.local>
@@ -6,8 +6,8 @@ Build-Depends: debhelper-compat (= 13)
 Standards-Version: 4.6.2
 Rules-Requires-Root: no
 
-Package: kaiko-camera
+Package: silkworm-observer
 Architecture: arm64
 Depends: ${misc:Depends}, python3, python3-pyqt6, python3-dbus, python3-gi, python3-opencv, python3-picamera2, polkitd | policykit-1, dbus, systemd
-Description: Kaiko Camera GUI for Raspberry Pi
+Description: Silkworm Observer GUI for Raspberry Pi
  GUI for camera preview, image capture, and video recording.

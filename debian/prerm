@@ -2,7 +2,7 @@
 set -e
 
 if [ "$1" = "remove" ]; then
-  systemctl disable --now kaiko-updater.service || true
+  systemctl disable --now silkworm-updater.service || true
 fi
 
 exit 0

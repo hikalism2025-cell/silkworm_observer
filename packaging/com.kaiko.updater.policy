@@ -2,8 +2,8 @@
 <!DOCTYPE policyconfig PUBLIC "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
     "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
 <policyconfig>
-  <action id="com.kaiko.updater.install">
-    <description>Install Kaiko Camera updates</description>
+  <action id="com.silkworm.observer.install">
+    <description>Install Silkworm Observer updates</description>
     <message>Authentication is required to install updates</message>
     <defaults>
       <allow_any>no</allow_any>

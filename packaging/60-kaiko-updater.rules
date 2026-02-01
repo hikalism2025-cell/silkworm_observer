@@ -1,5 +1,5 @@
 polkit.addRule(function(action, subject) {
-    if (action.id == "com.kaiko.updater.install" && subject.isInGroup("kaiko-operators")) {
+    if (action.id == "com.silkworm.observer.install" && subject.isInGroup("kaiko-operators")) {
         return polkit.Result.YES;
     }
 });

@@ -10,13 +10,13 @@ import dbus.service
 from dbus.mainloop.glib import DBusGMainLoop
 from gi.repository import GLib
 
-SERVICE_NAME = "com.kaiko.Updater"
-OBJECT_PATH = "/com/kaiko/Updater"
-INTERFACE = "com.kaiko.Updater"
+SERVICE_NAME = "com.silkworm.ObserverUpdater"
+OBJECT_PATH = "/com/silkworm/ObserverUpdater"
+INTERFACE = "com.silkworm.ObserverUpdater"
 
-CONFIG_PATH = Path("/etc/kaiko-camera/updater.json")
+CONFIG_PATH = Path("/etc/silkworm-observer/updater.json")
 DEFAULT_LATEST_URL = "https://raw.githubusercontent.com/hikalism2025-cell/silkworm_observer/main/latest.json"
-DOWNLOAD_PATH = Path("/var/tmp/kaiko-camera_update.deb")
+DOWNLOAD_PATH = Path("/var/tmp/silkworm-observer_update.deb")
 
 
 def load_config() -> dict:
@@ -28,7 +28,7 @@ def load_config() -> dict:
 def get_installed_version() -> str:
     try:
         result = subprocess.check_output(
-            ["dpkg-query", "-W", "-f=${Version}", "kaiko-camera"],
+            ["dpkg-query", "-W", "-f=${Version}", "silkworm-observer"],
             text=True,
         )
         return result.strip()
@@ -115,7 +115,7 @@ class UpdaterService(dbus.service.Object):
                 [
                     "pkcheck",
                     "--action-id",
-                    "com.kaiko.updater.install",
+                    "com.silkworm.observer.install",
                     "--process",
                     str(pid),
                     "--allow-user-interaction",

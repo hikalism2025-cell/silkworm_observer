@@ -4,6 +4,7 @@ from datetime import datetime
 from pathlib import Path
 
 import cv2
+import subprocess
 from PyQt6 import QtCore, QtGui, QtWidgets
 try:
     import dbus  # type: ignore[import-not-found]
@@ -27,7 +28,7 @@ class VideoLabel(QtWidgets.QLabel):
 class CameraRoiApp(QtWidgets.QMainWindow):
     def __init__(self) -> None:
         super().__init__()
-        self.setWindowTitle("Raspberry Pi Camera ROI Tool (Qt)")
+        self.setWindowTitle("Silkworm Observer")
 
         self.camera_ids = (1, 2)
         self.cameras: dict[int, Picamera2] = {}
@@ -36,8 +37,9 @@ class CameraRoiApp(QtWidgets.QMainWindow):
 
         self.display_w = 450
         self.display_h = 350
-        self.save_path = Path("/home/miyauchi/images")
-        self.video_save_path = Path("/home/miyauchi/videos")
+        home_dir = Path.home()
+        self.save_path = home_dir / "images"
+        self.video_save_path = home_dir / "videos"
         self.exp_name = "kaiko"
         self.video_length_seconds = 60 * 10
         self.video_interval_seconds = 0
@@ -49,6 +51,7 @@ class CameraRoiApp(QtWidgets.QMainWindow):
         self.image_capturing = False
         self.image_timer = QtCore.QTimer(self)
         self.image_timer.timeout.connect(self._capture_image_tick)
+        self.last_saved_path: Path | None = None
         self.camera_lock = threading.Lock()
 
         self._build_ui()
@@ -68,7 +71,6 @@ class CameraRoiApp(QtWidgets.QMainWindow):
         self.start_btn = QtWidgets.QPushButton("Start")
         self.stop_btn = QtWidgets.QPushButton("Stop")
         self.stop_btn.setEnabled(False)
-        self.status_label = QtWidgets.QLabel("Stopped")
 
         self.preview_btn = QtWidgets.QPushButton("Preview")
         self.update_btn = QtWidgets.QPushButton("Update")
@@ -76,9 +78,8 @@ class CameraRoiApp(QtWidgets.QMainWindow):
         toolbar.addWidget(self.start_btn)
         toolbar.addWidget(self.stop_btn)
         toolbar.addWidget(self.preview_btn)
-        toolbar.addWidget(self.update_btn)
         toolbar.addStretch()
-        toolbar.addWidget(self.status_label)
+        toolbar.addWidget(self.update_btn)
 
         left_layout.addLayout(toolbar)
 
@@ -160,9 +161,11 @@ class CameraRoiApp(QtWidgets.QMainWindow):
         self.path_edit = QtWidgets.QLineEdit()
         self.path_edit.setFixedWidth(self.mode_tab_width)
         self.path_btn = QtWidgets.QPushButton("Browse")
+        self.open_last_btn = QtWidgets.QPushButton("Open Last")
         path_row = QtWidgets.QHBoxLayout()
         path_row.addWidget(self.path_edit)
         path_row.addWidget(self.path_btn)
+        path_row.addWidget(self.open_last_btn)
         path_row.addStretch()
         path_layout.addRow("Path", path_row)
 
@@ -173,6 +176,7 @@ class CameraRoiApp(QtWidgets.QMainWindow):
         self.preview_btn.clicked.connect(self.start_camera)
         self.update_btn.clicked.connect(self.request_update)
         self.path_btn.clicked.connect(self.choose_save_path)
+        self.open_last_btn.clicked.connect(self.open_last_capture)
         self.mode_tabs.currentChanged.connect(self.update_path_edit)
         self.mode_tabs.currentChanged.connect(self.update_settings_stack)
         self.update_path_edit()
@@ -198,8 +202,6 @@ class CameraRoiApp(QtWidgets.QMainWindow):
             return
         info_list = self._camera_info_list()
         info_text = self._camera_info_text(info_list)
-        if info_text:
-            self.status_label.setText(info_text)
         self._ensure_save_dirs()
         with self.camera_lock:
             self.cameras.clear()
@@ -231,7 +233,6 @@ class CameraRoiApp(QtWidgets.QMainWindow):
         self.is_running = True
         self.start_btn.setEnabled(False)
         self.stop_btn.setEnabled(True)
-        self.status_label.setText("Running")
         self.timer.start(self.frame_interval_ms)
 
     def stop_camera(self) -> None:
@@ -247,7 +248,6 @@ class CameraRoiApp(QtWidgets.QMainWindow):
         self.timer.stop()
         self.start_btn.setEnabled(True)
         self.stop_btn.setEnabled(False)
-        self.status_label.setText("Stopped")
 
     def _camera_info_list(self) -> list[dict]:
         if Picamera2 is None:
@@ -318,8 +318,8 @@ class CameraRoiApp(QtWidgets.QMainWindow):
             return
         try:
             bus = dbus.SystemBus()
-            proxy = bus.get_object("com.kaiko.Updater", "/com/kaiko/Updater")
-            iface = dbus.Interface(proxy, "com.kaiko.Updater")
+            proxy = bus.get_object("com.silkworm.ObserverUpdater", "/com/silkworm/ObserverUpdater")
+            iface = dbus.Interface(proxy, "com.silkworm.ObserverUpdater")
             success, message = iface.InstallUpdate()
             if success:
                 QtWidgets.QMessageBox.information(self, "Update", message)
@@ -378,6 +378,7 @@ class CameraRoiApp(QtWidgets.QMainWindow):
             filepath = self.save_path / filename
             bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
             cv2.imwrite(str(filepath), bgr)
+            self.last_saved_path = filepath
         QtWidgets.QMessageBox.information(
             self,
             "Captured",
@@ -449,6 +450,7 @@ class CameraRoiApp(QtWidgets.QMainWindow):
                 encoder = H264Encoder()
                 try:
                     cam.start_recording(encoder, str(filepath))
+                    self.last_saved_path = filepath
                 except Exception:
                     self.recording = False
                     break
@@ -478,6 +480,15 @@ class CameraRoiApp(QtWidgets.QMainWindow):
         self.path_edit.setText(selected)
         self._sync_save_paths()
         self._ensure_save_dirs()
+
+    def open_last_capture(self) -> None:
+        if not self.last_saved_path:
+            QtWidgets.QMessageBox.information(self, "Open Last", "まだ撮影したファイルがありません。")
+            return
+        try:
+            subprocess.run(["xdg-open", str(self.last_saved_path)], check=False)
+        except Exception as exc:
+            QtWidgets.QMessageBox.warning(self, "Open Last", f"開けませんでした: {exc}")
 
     def _sync_save_paths(self) -> None:
         mode_path = Path(self.path_edit.text()).expanduser()

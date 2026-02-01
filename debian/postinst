@@ -1,15 +1,20 @@
 #!/bin/sh
 set -e
 
-if ! getent group kaiko-operators >/dev/null; then
-  addgroup --system kaiko-operators >/dev/null
+if ! getent group silkworm-operators >/dev/null; then
+  addgroup --system silkworm-operators >/dev/null
 fi
 
-if [ -f /etc/kaiko-camera/updater.json ]; then
-  chmod 644 /etc/kaiko-camera/updater.json || true
+if [ ! -f /etc/silkworm-observer/updater.json ]; then
+  mkdir -p /etc/silkworm-observer
+  cp /usr/share/silkworm-observer/updater.json.example /etc/silkworm-observer/updater.json || true
+fi
+
+if [ -f /etc/silkworm-observer/updater.json ]; then
+  chmod 644 /etc/silkworm-observer/updater.json || true
 fi
 
 systemctl daemon-reload || true
-systemctl enable --now kaiko-updater.service || true
+systemctl enable --now silkworm-updater.service || true
 
 exit 0
