@@ -1,0 +1,14 @@
+*.deb
+*.buildinfo
+*.changes
+*.dsc
+*.tar.xz
+
+.venv/
+
+debian/.debhelper/
+debian/debhelper-build-stamp
+debian/files
+debian/kaiko-camera*
+debian/*.debhelper
+debian/*.substvars
