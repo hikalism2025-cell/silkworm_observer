@@ -2,8 +2,8 @@ app_qt_v2.py /usr/lib/silkworm-observer/
 updater/kaiko_updater_service.py /usr/lib/silkworm-observer/
 packaging/kaiko-camera /usr/bin/silkworm-observer
 packaging/kaiko-camera.desktop /usr/share/applications/silkworm-observer.desktop
-packaging/com.silkworm.ObserverUpdater.service /usr/share/dbus-1/system-services/com.silkworm.ObserverUpdater.service
-packaging/kaiko-updater.service /usr/lib/systemd/system/silkworm-updater.service
-packaging/com.kaiko.updater.policy /usr/share/polkit-1/actions/com.silkworm.observer.policy
-packaging/60-kaiko-updater.rules /etc/polkit-1/rules.d/60-silkworm-observer.rules
-packaging/updater.json.example /usr/share/silkworm-observer/updater.json.example
+packaging/com.silkworm.ObserverUpdater.service /usr/share/dbus-1/system-services/
+packaging/kaiko-updater.service /usr/lib/systemd/system/
+packaging/com.kaiko.updater.policy /usr/share/polkit-1/actions/
+packaging/60-kaiko-updater.rules /etc/polkit-1/rules.d/
+packaging/updater.json.example /usr/share/silkworm-observer/

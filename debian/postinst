@@ -5,6 +5,14 @@ if ! getent group silkworm-operators >/dev/null; then
   addgroup --system silkworm-operators >/dev/null
 fi
 
+if [ -d /usr/share/silkworm-observer/updater.json.example ]; then
+  rm -rf /usr/share/silkworm-observer/updater.json.example
+fi
+
+if [ -d /usr/lib/systemd/system/silkworm-updater.service ]; then
+  rm -rf /usr/lib/systemd/system/silkworm-updater.service
+fi
+
 if [ ! -f /etc/silkworm-observer/updater.json ]; then
   mkdir -p /etc/silkworm-observer
   cp /usr/share/silkworm-observer/updater.json.example /etc/silkworm-observer/updater.json || true
