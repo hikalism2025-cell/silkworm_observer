@@ -9,8 +9,8 @@ if [ -d /usr/share/silkworm-observer/updater.json.example ]; then
   rm -rf /usr/share/silkworm-observer/updater.json.example
 fi
 
-if [ -d /usr/lib/systemd/system/silkworm-updater.service ]; then
-  rm -rf /usr/lib/systemd/system/silkworm-updater.service
+if [ -f /usr/lib/systemd/system/silkworm-updater.service ]; then
+  rm -f /usr/lib/systemd/system/silkworm-updater.service
 fi
 
 if [ ! -f /etc/silkworm-observer/updater.json ]; then

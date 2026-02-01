@@ -4,6 +4,7 @@ packaging/kaiko-camera /usr/bin/silkworm-observer
 packaging/kaiko-camera.desktop /usr/share/applications/silkworm-observer.desktop
 packaging/com.silkworm.ObserverUpdater.service /usr/share/dbus-1/system-services/
 packaging/silkworm-updater.service /lib/systemd/system/
+packaging/com.silkworm.ObserverUpdater.conf /etc/dbus-1/system.d/
 packaging/com.kaiko.updater.policy /usr/share/polkit-1/actions/
 packaging/60-kaiko-updater.rules /etc/polkit-1/rules.d/
 packaging/updater.json.example /usr/share/silkworm-observer/
