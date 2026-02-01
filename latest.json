@@ -1,5 +1,5 @@
 {
   "version": "0.1.0",
-  "deb_url": "https://github.com/hikalism2025-cell/silkworm_observer/releases/download/v0.1.0/kaiko-camera_0.1.0-1_arm64.deb",
-  "sha256": "PUT_SHA256_HERE"
+  "deb_url": "https://github.com/hikalism2025-cell/silkworm_observer/releases/download/v0.1.0/kaiko-camera_0.1.0_arm64.deb",
+  "sha256": "ac5f743100f209ff5ee8b02a2efc3d3eebbf6c3b18242ec0830ca497789fc306"
 }
