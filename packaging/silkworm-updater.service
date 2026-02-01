@@ -1,0 +1,13 @@
+[Unit]
+Description=Silkworm Observer Updater Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=dbus
+BusName=com.silkworm.ObserverUpdater
+ExecStart=/usr/bin/python3 /usr/lib/silkworm-observer/kaiko_updater_service.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
